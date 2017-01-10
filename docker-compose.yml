@@ -1,0 +1,13 @@
+version: '2'
+
+services: 
+    node:
+        container_name: node-typescript
+        build: 
+            context: .
+            dockerfile: dockerfile
+        volumes:
+            - .:/home/node
+            - /home/node/node_modules
+        ports:
+            - "3000:3000"
