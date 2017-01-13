@@ -2,13 +2,13 @@ FROM node
 
 MAINTAINER Jason Jones
 
-RUN useradd --user-group --create-home --shell /bin/false node
-ENV HOME=/home/node
+RUN useradd --user-group --create-home --shell /bin/false nodets
+ENV HOME=/home/nodets
 
 COPY . $HOME/
-RUN chown -R node:node $HOME/
+RUN chown -R nodets:nodets $HOME/
 
-USER node
+USER nodets
 WORKDIR $HOME/
 RUN npm install
 
