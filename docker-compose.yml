@@ -7,8 +7,8 @@ services:
             context: .
             dockerfile: dockerfile
         volumes:
-            - .:/home/node
-            - /home/node/node_modules
+            - .:/home/nodets
+            - /home/nodets/node_modules
         ports:
             - "3000:3000"
         depends_on:
