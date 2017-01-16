@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "prestart": "npm run clean && npm run compile",
-    "start": "npm-run-all --parallel compile:watch nodemon",
+    "start": "npm-run-all --parallel compile:watch test:watch nodemon",
     "clean": "rm -rf build",
     "compile": "tsc",
     "compile:watch": "npm run compile -- --watch",
     "nodemon": "nodemon build/server.js",
-    "test": "NODE_ENV=test mocha --compilers ts:ts-node/register src/**/*.test.ts"
+    "test": "NODE_ENV=test mocha --compilers ts:ts-node/register src/**/*.test.ts",
+    "test:watch": "npm run test -- --watch"
   },
   "author": "Jason Jones",
   "license": "MIT",
