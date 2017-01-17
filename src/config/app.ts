@@ -3,6 +3,7 @@ import * as bodyParser from 'body-parser';
 import * as logger from 'morgan';
 
 import IndexRoute from '../base/index.route';
+import UserRoute from '../user/user.route';
 
 class App {
 
@@ -28,6 +29,7 @@ class App {
 
     public initRoutes(): void {
         this.express.use('/', IndexRoute);
+        this.express.use('/users', UserRoute);
     }
 }
 
