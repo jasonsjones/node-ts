@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 describe('Base Route', () => {
 
-    it('should be json', () => {
+    it('GET / is json', () => {
         chai.request(app)
             .get('/')
             .then((res) => {
@@ -20,7 +20,7 @@ describe('Base Route', () => {
             });
     });
 
-    it('should have message property that is a string', () => {
+    it('GET / returns json with message property that is a string', () => {
         chai.request(app)
             .get('/')
             .then((res) => {
