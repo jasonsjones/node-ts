@@ -22,4 +22,13 @@ class UserSchema {
 
 let userSchema = new UserSchema().getSchema();
 
-export default mongoose.model('User', userSchema);
+let model: mongoose.Model<any>;
+try {
+    model = mongoose.model('User');
+} catch (e) {
+    if (e.name === 'MissingSchemaError') {
+        model = mongoose.model('User', userSchema);
+    }
+}
+
+export default model;
