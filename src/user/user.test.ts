@@ -9,7 +9,7 @@ const expect = chai.expect;
 
 describe('User Route', () => {
 
-    it('should be json', () => {
+    it('GET /users is json', () => {
         chai.request(app)
             .get('/users')
             .then((res) => {

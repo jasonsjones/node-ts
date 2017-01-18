@@ -6,7 +6,8 @@ export function getUsers(req: Request, res: Response): void {
 }
 
 export function seedUsers(req: Request, res: Response): void {
-    UserModel.find({})
+    UserModel
+        .find({})
         .exec((err, collection) => {
             if (err) {
                 console.log('Ooops...there is an error getting the users...');
