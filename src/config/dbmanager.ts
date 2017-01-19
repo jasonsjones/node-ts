@@ -1,15 +1,17 @@
 import * as mongoose from 'mongoose';
-import { DbEnv } from './enums';
+import { DbEnv } from '../common/enums';
 
 import config from './config';
 
 class DbManager {
     private static _dockerInstance: DbManager;
     private connection: mongoose.Connection;
+    private dbUri: string;
 
     private constructor(env: DbEnv) {
         (<any>mongoose).Promise = global.Promise;
         if (env === DbEnv.DOCKER) {
+            this.dbUri = `mongodb://${config.db.host}/${config.db.name}`;
             this.connectToDockerDb();
             this.initHandlers();
         }
@@ -32,19 +34,44 @@ class DbManager {
         }
     }
 
-    private initHandlers(): void {
-        console.log('Initializing db handlers...');
-
-        this.connection.once('open', () => {
-            console.log('Connected to mongo container...');
-        });
-
-        this.connection.on('error', console.error.bind(console, 'connection error'));
+    private connectToDockerDb(): void {
+        if (!this.connection) {
+            this.connection = mongoose.createConnection(this.dbUri);
+        }
     }
 
-    private connectToDockerDb(): void {
-        mongoose.connect(`mongodb://${config.db.host}/${config.db.name}`);
-        this.connection = mongoose.connection;
+    private initHandlers(): void {
+        if (this.connection) {
+
+            this.connection.once('open', () => {
+                console.log('Mongoose connected to mongo container at ' + this.dbUri);
+            });
+
+            this.connection.on('error', console.error.bind(console, 'connection error'));
+
+            this.connection.on('disconnected', () => {
+                console.log('Mongoose disconnected');
+            });
+
+            process.once('SIGUSR2', () => {
+                this.gracefulShutdown('nodemon restart', () => {
+                    process.kill(process.pid, 'SIGUSR2');
+                })
+            });
+
+            process.on('SIGINT', () => {
+                this.gracefulShutdown('app termination', () => {
+                    process.exit(0);
+                });
+            });
+        }
+    }
+
+    private gracefulShutdown(msg: string, cb: () => void): void {
+        this.connection.close(() => {
+            console.log('Mongoose disconnected through ' + msg);
+            cb();
+        })
     }
 }
 
