@@ -1,19 +1,34 @@
 import * as mongoose from 'mongoose';
-import { DbEnv } from './enums';
+import { DbEnv } from '../common/enums';
 
 import config from './config';
 
 class DbManager {
-
+    private static _dockerInstance: DbManager;
     private connection: mongoose.Connection;
 
-    constructor(env: DbEnv) {
+    private constructor(env: DbEnv) {
         (<any>mongoose).Promise = global.Promise;
         if (env === DbEnv.DOCKER) {
             this.connectToDockerDb();
             this.initHandlers();
+        }
+    }
+
+    public static getInstance(env: DbEnv): DbManager {
+        if (env === DbEnv.DOCKER) {
+            if (!DbManager._dockerInstance) {
+                DbManager._dockerInstance = new DbManager(env);
+            }
+            return DbManager._dockerInstance;
         } else {
-            console.log('Mongodb not install on local machine');
+            throw new Error('Error: Cannot get non-docker instance');
+        }
+    }
+
+    public getConnection(): mongoose.Connection {
+        if (this.connection) {
+            return this.connection;
         }
     }
 
@@ -28,8 +43,7 @@ class DbManager {
     }
 
     private connectToDockerDb(): void {
-        mongoose.connect(`mongodb://${config.db.host}/${config.db.name}`);
-        this.connection = mongoose.connection;
+        this.connection = mongoose.createConnection(`mongodb://${config.db.host}/${config.db.name}`);
     }
 }
 
