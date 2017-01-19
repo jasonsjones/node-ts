@@ -1,7 +1,7 @@
 import * as mongoose from 'mongoose';
 import UserSchema from './user.schema';
 
-let model: mongoose.Model<any>;
+let model: mongoose.Model<mongoose.Document>;
 try {
     model = mongoose.model('User');
 } catch (e) {
