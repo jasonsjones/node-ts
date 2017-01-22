@@ -3,7 +3,7 @@ import { DbEnv } from '../common/enums';
 
 import config from './config';
 
-class DbManager {
+export class DbManager {
     private static _dockerInstance: DbManager;
     private connection: mongoose.Connection;
     private dbUri: string;
@@ -74,5 +74,3 @@ class DbManager {
         })
     }
 }
-
-export default DbManager;

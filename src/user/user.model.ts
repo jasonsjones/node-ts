@@ -1,6 +1,6 @@
 import * as mongoose from 'mongoose';
 import UserSchema from './user.schema';
-import DbManager from '../config/dbmanager';
+import { DbManager } from '../config/dbmanager';
 import { DbEnv } from '../common/enums';
 import { IModel } from '../common/model';
 import { IUserModel } from './user.interfaces';
