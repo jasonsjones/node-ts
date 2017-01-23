@@ -4,8 +4,10 @@ import { DbEnv } from '../common/enums';
 import config from './config';
 
 export class DbManager {
+
     private static _dockerInstance: DbManager;
-    private connection: mongoose.Connection;
+    private static connection: mongoose.Connection;
+
     private dbUri: string;
 
     private constructor(env: DbEnv) {
@@ -29,27 +31,27 @@ export class DbManager {
     }
 
     public getConnection(): mongoose.Connection {
-        if (this.connection) {
-            return this.connection;
+        if (DbManager.connection) {
+            return DbManager.connection;
         }
     }
 
     private connectToDockerDb(): void {
-        if (!this.connection) {
-            this.connection = mongoose.createConnection(this.dbUri);
+        if (!DbManager.connection) {
+            DbManager.connection = mongoose.createConnection(this.dbUri);
         }
     }
 
     private initHandlers(): void {
-        if (this.connection) {
+        if (DbManager.connection) {
 
-            this.connection.once('open', () => {
+            DbManager.connection.once('open', () => {
                 console.log('Mongoose connected to mongo container at ' + this.dbUri);
             });
 
-            this.connection.on('error', console.error.bind(console, 'connection error'));
+            DbManager.connection.on('error', console.error.bind(console, 'connection error'));
 
-            this.connection.on('disconnected', () => {
+            DbManager.connection.on('disconnected', () => {
                 console.log('Mongoose disconnected');
             });
 
@@ -68,7 +70,7 @@ export class DbManager {
     }
 
     private gracefulShutdown(msg: string, cb: () => void): void {
-        this.connection.close(() => {
+        DbManager.connection.close(() => {
             console.log('Mongoose disconnected through ' + msg);
             cb();
         })
