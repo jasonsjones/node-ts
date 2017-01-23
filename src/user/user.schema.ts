@@ -7,16 +7,16 @@ class UserSchema {
         this.defineSchema();
     }
 
-    defineSchema(): void {
+    public getSchema(): Schema {
+        return this.schema;
+    }
+
+    private defineSchema(): void {
         this.schema = new Schema({
             name: String,
             email: String,
             admin: Boolean
         });
-    }
-
-    getSchema(): Schema {
-        return this.schema;
     }
 }
 
