@@ -18,10 +18,6 @@ describe('User Controller', () => {
         };
     });
 
-    afterEach(() => {
-        res.json.restore();
-    })
-
     it('getUsers() makes a call to res.json()');
     it('getUsers() calls res.json() with message');
 
