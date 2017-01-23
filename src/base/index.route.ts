@@ -1,5 +1,5 @@
 import { Router, Request, Response } from  'express';
-import * as IndexController from './index.controller';
+import { IndexController } from './index.controller';
 
 class IndexRouter {
     private router: Router;

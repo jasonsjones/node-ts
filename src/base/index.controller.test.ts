@@ -3,7 +3,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { Request, Response } from 'express';
 
-import * as IndexController from './index.controller';
+import { IndexController } from './index.controller';
 
 const expect = chai.expect;
 
@@ -16,9 +16,6 @@ describe('Index controller', () => {
         res = {
             json: sinon.spy()
         };
-    });
-
-    afterEach(() => {
     });
 
     it('getIndex() makes a call to res.json()', () => {
