@@ -1,5 +1,5 @@
 import { Router, Request, Response } from  'express';
-import * as UserController from './user.controller';
+import { UserController } from './user.controller';
 
 class UserRoute {
     private router: Router;

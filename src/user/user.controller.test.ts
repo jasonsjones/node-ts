@@ -4,7 +4,7 @@ import * as chai from 'chai';
 import * as sinon from 'sinon';
 import { Request, Response } from 'express';
 
-import * as UserController from './user.controller';
+import { UserController } from './user.controller';
 
 const expect = chai.expect;
 
