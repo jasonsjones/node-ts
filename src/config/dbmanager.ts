@@ -13,6 +13,7 @@ export class DbManager {
     private constructor(env: DbEnv) {
         (<any>mongoose).Promise = global.Promise;
         if (env === DbEnv.DOCKER) {
+            console.log('Creating new DbManager instance...');
             this.dbUri = `mongodb://${config.db.host}/${config.db.name}`;
             this.connectToDockerDb();
             this.initHandlers();
