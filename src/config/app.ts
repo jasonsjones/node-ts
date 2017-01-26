@@ -22,7 +22,7 @@ class App {
     public middleware(): void {
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({extended: false}));
-        if (process.env.NODE_ENV != 'test') {
+        if (process.env.NODE_ENV !== 'test') {
             this.express.use(logger('dev'));
         }
     }
@@ -33,4 +33,4 @@ class App {
     }
 }
 
-export default new App().getExpressApp();;
+export default new App().getExpressApp();

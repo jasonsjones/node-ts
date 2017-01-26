@@ -19,7 +19,7 @@ export class UserModel {
         let connection = this.manager.getConnection();
         try {
             this.model.user = connection.model<IUserModel>('User');
-        } catch(e) {
+        } catch (e) {
             if (e.name === 'MissingSchemaError') {
                 this.model.user = connection.model<IUserModel>('User', UserSchema);
             }

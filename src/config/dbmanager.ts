@@ -59,7 +59,7 @@ export class DbManager {
             process.once('SIGUSR2', () => {
                 this.gracefulShutdown('nodemon restart', () => {
                     process.kill(process.pid, 'SIGUSR2');
-                })
+                });
             });
 
             process.once('SIGINT', () => {
@@ -74,6 +74,6 @@ export class DbManager {
         DbManager.connection.close(() => {
             console.log('Mongoose disconnected through ' + msg);
             cb();
-        })
+        });
     }
 }

@@ -4,4 +4,4 @@ export default {
         host: 'mongo',
         name: 'dbContainer'
     }
-}
+};
