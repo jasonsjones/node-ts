@@ -62,7 +62,7 @@ export class DbManager {
                 })
             });
 
-            process.on('SIGINT', () => {
+            process.once('SIGINT', () => {
                 this.gracefulShutdown('app termination', () => {
                     process.exit(0);
                 });
