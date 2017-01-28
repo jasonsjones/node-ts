@@ -1,8 +1,19 @@
 import { Document } from 'mongoose';
 
+interface IFullName {
+    firstName: string;
+    lastName: string;
+}
+
+interface ILocalCredentials {
+    username: string;
+    password: string;
+}
+
 interface IUser {
-    name: string;
+    name: IFullName;
     email: string;
+    local: ILocalCredentials;
     admin?: boolean;
 }
 
