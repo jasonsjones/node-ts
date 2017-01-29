@@ -9,15 +9,54 @@ const expect = chai.expect;
 
 describe('User Route', () => {
 
-    it('GET /users is json', () => {
-        chai.request(app)
-            .get('/users')
-            .then((res) => {
-                expect(res.type).to.eql('application/json');
-            })
-            .catch((err) => {
-                throw err;
-            });
+    describe('GET /users', () => {
+
+        it('is json', () => {
+            chai.request(app)
+                .get('/users')
+                .then((res) => {
+                    expect(res.type).to.eql('application/json');
+                })
+                .catch((err) => {
+                    throw err;
+                });
+        });
+
+        it('returns json with message property that is a string', () => {
+            chai.request(app)
+                .get('/users')
+                .then((res) => {
+                    expect(res.body).to.have.property('message').that.is.a('string');
+                })
+                .catch((err) => {
+                    throw err;
+                });
+        });
+    });
+
+    describe('GET /users/seedUsers', () => {
+
+        it('is json', () => {
+            chai.request(app)
+                .get('/users/seedUsers')
+                .then((res) => {
+                    expect(res.type).to.eql('application/json');
+                })
+                .catch((err) => {
+                    throw err;
+                });
+        });
+
+        it('returns json with message property that is a string', () => {
+            chai.request(app)
+                .get('/users/seedUsers')
+                .then((res) => {
+                    expect(res.body).to.have.property('message').that.is.a('string');
+                })
+                .catch((err) => {
+                    throw err;
+                });
+        });
     });
 
 });

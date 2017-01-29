@@ -40,6 +40,11 @@ describe('User Controller', () => {
 
     describe('seedUsers()', () => {
 
+        let UserMock;
+        beforeEach(() => {
+            UserMock = sinon.mock(User);
+        });
+
         it('calls res.json()', (done) => {
             UserController.seedUsers(req, res, function() {
                 expect(res.json.calledOnce).to.be.true;
@@ -49,7 +54,6 @@ describe('User Controller', () => {
 
         it('calls res.json() with message when db is empty', (done) => {
             let resObj = {message: 'seeding users in database'};
-            let UserMock = sinon.mock(User);
 
             UserMock.expects('find').withArgs({})
                 .chain('exec')
@@ -64,7 +68,22 @@ describe('User Controller', () => {
             });
         });
 
-        it('calls res.json() with users when db is not empty');
+        it('calls res.json() with users when db is not empty', (done) => {
+            let testUser = {name: 'jason'};
+            let resObj = {users: testUser};
+
+            UserMock.expects('find').withArgs({})
+                .chain('exec')
+                .resolves(testUser);
+
+            UserController.seedUsers(req, res, function() {
+                UserMock.verify();
+                UserMock.restore();
+                expect(res.json.calledOnce).to.be.true;
+                expect(res.json.calledWith(resObj)).to.be.true;
+                done();
+            });
+        });
 
     });
 
