@@ -45,6 +45,7 @@ export class DbManager {
 
     private initHandlers(): void {
         if (DbManager.connection) {
+            process.removeAllListeners('SIGINT').removeAllListeners('SIGUSR2');
 
             DbManager.connection.once('open', () => {
                 console.log('Mongoose connected to mongo container at ' + this.dbUri);
