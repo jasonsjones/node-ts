@@ -1,3 +1,5 @@
+const debug = require('debug')('node-ts:dbmanager');
+
 import * as mongoose from 'mongoose';
 import { DbEnv } from '../common/enums';
 
@@ -13,7 +15,7 @@ export class DbManager {
     private constructor(env: DbEnv) {
         (<any>mongoose).Promise = global.Promise;
         if (env === DbEnv.DOCKER) {
-            console.log('Creating new DbManager instance...');
+            debug('Creating new DbManager instance...');
             this.dbUri = `mongodb://${config.db.host}/${config.db.name}`;
             this.connectToDockerDb();
             this.initHandlers();
@@ -48,13 +50,13 @@ export class DbManager {
             process.removeAllListeners('SIGINT').removeAllListeners('SIGUSR2');
 
             DbManager.connection.once('open', () => {
-                console.log('Mongoose connected to mongo container at ' + this.dbUri);
+                debug(`Mongoose connected to mongo container at ${this.dbUri}`);
             });
 
             DbManager.connection.on('error', console.error.bind(console, 'connection error'));
 
             DbManager.connection.on('disconnected', () => {
-                console.log('Mongoose disconnected');
+                debug(`Mongoose disconnected`);
             });
 
             process.once('SIGUSR2', () => {
@@ -73,7 +75,7 @@ export class DbManager {
 
     private gracefulShutdown(msg: string, cb: () => void): void {
         DbManager.connection.close(() => {
-            console.log('Mongoose disconnected through ' + msg);
+            debug(`Mongoose disconnected through ${msg}`);
             cb();
         });
     }

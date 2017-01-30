@@ -8,6 +8,9 @@ services:
         volumes:
             - .:/home/nodets
             - /home/nodets/node_modules
+        environment:
+            - DEBUG=node-ts:*
+        tty: true
         ports:
             - "3000:3000"
         depends_on:
