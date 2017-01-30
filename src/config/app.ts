@@ -19,7 +19,7 @@ class App {
         return this.express;
     }
 
-    public middleware(): void {
+    private middleware(): void {
         this.express.use(bodyParser.json());
         this.express.use(bodyParser.urlencoded({extended: false}));
         if (process.env.NODE_ENV !== 'test') {
@@ -27,7 +27,7 @@ class App {
         }
     }
 
-    public initRoutes(): void {
+    private initRoutes(): void {
         this.express.use('/', IndexRoute);
         this.express.use('/users', UserRoute);
     }
