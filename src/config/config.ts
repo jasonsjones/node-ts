@@ -1,7 +1,13 @@
 export default {
     port: 3000,
     db: {
-        host: 'mongo',
-        name: 'dbContainer'
+        dev: {
+            host: 'mongo',
+            name: 'dbContainer'
+        },
+        test: {
+            host: 'mongo',
+            name: 'dbTestContainer'
+        }
     }
 };
