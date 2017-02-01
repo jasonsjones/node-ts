@@ -21,5 +21,12 @@ describe('DbManager', () => {
             expect(dbmanagerB).to.be.instanceOf(DbManager);
             expect(dbmanagerA).to.equal(dbmanagerB, 'instances should be equal');
         });
+
+        it('gets different connections for dev and test', () => {
+            let connectionA = DbManager.getInstance(DbEnv.DOCKER).getConnection();
+            let connectionB = DbManager.getInstance(DbEnv.DOCKER).getTestConnection();
+
+            expect(connectionA).to.not.equal(connectionB);
+        });
     });
 });
