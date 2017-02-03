@@ -38,7 +38,7 @@ describe('User Controller', () => {
         });
     });
 
-    describe('seedUsers()', () => {
+    describe.skip('seedUsers()', () => {
 
         let UserMock;
         beforeEach(() => {

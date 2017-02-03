@@ -14,11 +14,6 @@ export class UserController {
             .then(collection => {
                 if (collection && collection.length === 0) {
                     // create users here...
-                    UserController.createUsers().then((result) => {
-                        if (result.success) {
-                            res.json(result);
-                        }
-                    });
                 } else {
                     res.json({
                         success: true,
@@ -31,26 +26,5 @@ export class UserController {
                 console.log('Oops...we had an error');
                 next(err);
             });
-    }
-
-    private static createUsers(): Promise<any> {
-        return new Promise(function (resolve, reject) {
-            mockUsers.forEach(function (user, idx, arr) {
-                User.create(user, function (err) {
-                    if (err) {
-                        reject({
-                            success: false,
-                            message: 'error seeding database'
-                        });
-                    }
-                    if (idx === arr.length - 1) {
-                        resolve({
-                            success: true,
-                            message: 'seeding users in database'
-                        });
-                    }
-                });
-            });
-        });
     }
 }
