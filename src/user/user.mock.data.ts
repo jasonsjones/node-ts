@@ -1,3 +1,4 @@
+const DEFAULT_PASSWORD = 'p@ssw0rd';
 export default [
     {
         name: {
@@ -6,7 +7,8 @@ export default [
         },
         email: 'clark@dailyplanet.com',
         local: {
-            username: 'superman'
+            username: 'superman',
+            password: DEFAULT_PASSWORD
         },
         admin: true,
         createdDate: new Date('2016-09-12')
@@ -18,7 +20,8 @@ export default [
         },
         email: 'bruce@wayneenterprises.com',
         local: {
-            username: 'batman'
+            username: 'batman',
+            password: DEFAULT_PASSWORD
         },
         admin: false,
         createdDate: new Date('2016-09-14')
@@ -30,7 +33,8 @@ export default [
         },
         email: 'tony@starklabs.com',
         local: {
-            username: 'ironman'
+            username: 'ironman',
+            password: DEFAULT_PASSWORD
         },
         admin: true,
         createdDate: new Date('2016-09-17')
@@ -40,9 +44,10 @@ export default [
             first: 'Oliver',
             last: 'Queen'
         },
-        email: 'oliver@queenconsolidated',
+        email: 'oliver@queenconsolidated.com',
         local: {
-            username: 'arrow'
+            username: 'arrow',
+            password: DEFAULT_PASSWORD
         },
         admin: true,
         createdDate: new Date('2017-01-20')
@@ -54,7 +59,8 @@ export default [
         },
         email: 'barry@starzlabs.com',
         local: {
-            username: 'theflash'
+            username: 'theflash',
+            password: DEFAULT_PASSWORD
         },
         admin: false,
         createdDate: new Date('2016-09-20')
@@ -66,7 +72,8 @@ export default [
         },
         email: 'bruce@pantheon.com',
         local: {
-            username: 'hulk'
+            username: 'hulk',
+            password: DEFAULT_PASSWORD
         },
         admin: false,
         createdDate: new Date('2016-10-28')

@@ -1,3 +1,5 @@
+const debug = require('debug')('node-ts:userModel');
+
 import * as bcrypt from 'bcrypt-nodejs';
 import { Schema, Model } from 'mongoose';
 import { DbManager } from '../config/dbmanager';
@@ -9,7 +11,6 @@ import  mockUsers from './user.mock.data';
 
 class UserSchema {
     static readonly SALT_WORK_FACTOR = 10;
-    static readonly DEFAULT_PASSWORD = 'p@ssw0rd';
     private schema: Schema;
 
     constructor() {
@@ -31,7 +32,7 @@ class UserSchema {
             email: String,
             local: {
                 username: String,
-                password: {type: String, default: UserSchema.DEFAULT_PASSWORD}
+                password: String
             },
             admin: {type: Boolean, default: false},
             createdDate: {type: Date, default: Date.now()}
@@ -114,14 +115,17 @@ export class UserModel {
         User.find({}).exec()
             .then(collection => {
                 if (collection && collection.length === 0) {
-                    // create users here...
-                    console.log('creating users...');
+                    User.create(mockUsers)
+                        .then((users) => {
+                            debug('mock users added to db...');
+                            debug(JSON.stringify(users));
+                        });
                 } else {
-                    console.log('db already contains data...');
+                    debug('db already contains user data...');
                 }
             })
             .catch((err) => {
-                console.log('Oops...we had an error');
+                debug('Oops...we had an error');
             });
     }
 
