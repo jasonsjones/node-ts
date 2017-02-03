@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from './user.model';
 
+import  mockUsers from './user.mock.data';
+
 export class UserController {
 
     public static getUsers(req: Request, res: Response): void {
@@ -12,9 +14,16 @@ export class UserController {
             .then(collection => {
                 if (collection && collection.length === 0) {
                     // create users here...
-                    res.json({message: 'seeding users in database'});
+                    UserController.createUsers().then((result) => {
+                        if (result.success) {
+                            res.json(result);
+                        }
+                    });
                 } else {
-                    res.json({users: collection});
+                    res.json({
+                        success: true,
+                        payload: collection
+                    });
                 }
                 next();
             })
@@ -22,5 +31,26 @@ export class UserController {
                 console.log('Oops...we had an error');
                 next(err);
             });
+    }
+
+    private static createUsers(): Promise<any> {
+        return new Promise(function (resolve, reject) {
+            mockUsers.forEach(function (user, idx, arr) {
+                User.create(user, function (err) {
+                    if (err) {
+                        reject({
+                            success: false,
+                            message: 'error seeding database'
+                        });
+                    }
+                    if (idx === arr.length - 1) {
+                        resolve({
+                            success: true,
+                            message: 'seeding users in database'
+                        });
+                    }
+                });
+            });
+        });
     }
 }

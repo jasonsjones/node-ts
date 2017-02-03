@@ -15,6 +15,7 @@ interface IUser {
     email: string;
     local: ILocalCredentials;
     admin?: boolean;
+    createdDate: Date;
 }
 
 interface IUserModel extends IUser, Document {

@@ -34,7 +34,7 @@ describe('User Route', () => {
         });
     });
 
-    describe('GET /users/seedUsers', () => {
+    describe.skip('GET /users/seedUsers', () => {
 
         it('is json', () => {
             chai.request(app)
@@ -47,11 +47,11 @@ describe('User Route', () => {
                 });
         });
 
-        it('returns json with message property that is a string', () => {
+        it('returns json with success property that is a boolean', () => {
             chai.request(app)
                 .get('/users/seedUsers')
                 .then((res) => {
-                    expect(res.body).to.have.property('message').that.is.a('string');
+                    expect(res.body).to.have.property('success').that.is.a('boolean');
                 })
                 .catch((err) => {
                     throw err;
