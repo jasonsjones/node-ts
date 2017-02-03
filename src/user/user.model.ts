@@ -5,8 +5,11 @@ import { DbEnv } from '../common/enums';
 import { IModel } from '../common/model';
 import { IUserModel } from './user.interfaces';
 
+import  mockUsers from './user.mock.data';
+
 class UserSchema {
     static readonly SALT_WORK_FACTOR = 10;
+    static readonly DEFAULT_PASSWORD = 'p@ssw0rd';
     private schema: Schema;
 
     constructor() {
@@ -28,7 +31,7 @@ class UserSchema {
             email: String,
             local: {
                 username: String,
-                password: String
+                password: {type: String, default: UserSchema.DEFAULT_PASSWORD}
             },
             admin: {type: Boolean, default: false},
             createdDate: {type: Date, default: Date.now()}
@@ -106,6 +109,22 @@ export class UserModel {
         }
     }
 
+    public createUsers(): void {
+        let User = this.model.user;
+        User.find({}).exec()
+            .then(collection => {
+                if (collection && collection.length === 0) {
+                    // create users here...
+                    console.log('creating users...');
+                } else {
+                    console.log('db already contains data...');
+                }
+            })
+            .catch((err) => {
+                console.log('Oops...we had an error');
+            });
+    }
+
     public getModel(): IModel {
         return this.model;
     }
@@ -116,5 +135,8 @@ export class UserModel {
 }
 
 let userSchema: Schema = new UserSchema().getSchema();
-export const User: Model<IUserModel> = new UserModel(userSchema).getModel().user;
-export const TestUser: Model<IUserModel> = new UserModel(userSchema).getTestModel().user;
+let userModel = new UserModel(userSchema);
+userModel.createUsers();
+
+export const User: Model<IUserModel> = userModel.getModel().user;
+export const TestUser: Model<IUserModel> = userModel.getTestModel().user;
