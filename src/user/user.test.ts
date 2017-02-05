@@ -22,11 +22,22 @@ describe('User Route', () => {
                 });
         });
 
-        it('returns json with message property that is a string', () => {
+        it('returns json with success property that is a boolean', () => {
             chai.request(app)
                 .get('/users')
                 .then((res) => {
-                    expect(res.body).to.have.property('message').that.is.a('string');
+                    expect(res.body).to.have.property('success').that.is.a('boolean');
+                })
+                .catch((err) => {
+                    throw err;
+                });
+        });
+
+        it('returns json with payload property that is an array', () => {
+            chai.request(app)
+                .get('/users')
+                .then((res) => {
+                    expect(res.body).to.have.property('payload').that.is.an('array');
                 })
                 .catch((err) => {
                     throw err;

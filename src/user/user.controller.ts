@@ -5,8 +5,18 @@ import  mockUsers from './user.mock.data';
 
 export class UserController {
 
-    public static getUsers(req: Request, res: Response): void {
-        res.json({message: 'Getting all users...'});
+    public static getUsers(req: Request, res: Response, next: NextFunction): void {
+        User.find({}).exec()
+            .then(users => {
+                res.json({
+                    success: true,
+                    payload: users
+                });
+                next();
+            })
+            .catch(err => {
+                next(err);
+            });
     }
 
     public static seedUsers(req: Request, res: Response, next: NextFunction): void {

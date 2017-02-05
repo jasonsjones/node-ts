@@ -23,18 +23,34 @@ describe('User Controller', () => {
 
     describe('getUsers()', () => {
 
-        it('calls res.json()', () => {
-            UserController.getUsers(req, res);
-            expect(res.json.calledOnce).to.be.true;
+        let UserMock;
+        beforeEach(() => {
+            UserMock = sinon.mock(User);
+            UserMock.expects('find').withArgs({})
+                .chain('exec')
+                .resolves([]);
+        });
+        afterEach(() => {
+            UserMock.restore();
         });
 
-        it('calls res.json() with message', () => {
-            let resObj = {message: 'Getting all users...'};
+        it('calls res.json()', (done) => {
+            UserController.getUsers(req, res, function () {
+                UserMock.verify();
+                expect(res.json.calledOnce).to.be.true;
+                done();
+            });
+        });
 
-            UserController.getUsers(req, res);
+        it('calls res.json() with response obj', (done) => {
+            let resObj = {success: true, payload: []};
 
-            expect(res.json.calledOnce).to.be.true;
-            expect(res.json.calledWith(resObj)).to.be.true;
+            UserController.getUsers(req, res, function () {
+                UserMock.verify();
+                expect(res.json.calledOnce).to.be.true;
+                expect(res.json.calledWith(resObj)).to.be.true;
+                done();
+            });
         });
     });
 

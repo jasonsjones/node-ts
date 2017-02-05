@@ -26,8 +26,8 @@ class UserSchema {
     private defineSchema(): void {
         this.schema = new Schema({
             name: {
-                firstName: String,
-                lastName: String,
+                first: String,
+                last: String,
             },
             email: String,
             local: {
@@ -118,7 +118,6 @@ export class UserModel {
                     User.create(mockUsers)
                         .then((users) => {
                             debug('mock users added to db...');
-                            debug(JSON.stringify(users));
                         });
                 } else {
                     debug('db already contains user data...');
