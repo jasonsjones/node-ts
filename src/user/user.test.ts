@@ -18,7 +18,7 @@ describe('User Route', () => {
                     expect(res.type).to.eql('application/json');
                 })
                 .catch((err) => {
-                    throw err;
+                    console.log('Catch Error: ' + err);
                 });
         });
 
@@ -29,7 +29,7 @@ describe('User Route', () => {
                     expect(res.body).to.have.property('success').that.is.a('boolean');
                 })
                 .catch((err) => {
-                    throw err;
+                    console.log('Catch Error: ' + err);
                 });
         });
 
@@ -40,7 +40,7 @@ describe('User Route', () => {
                     expect(res.body).to.have.property('payload').that.is.an('array');
                 })
                 .catch((err) => {
-                    throw err;
+                    console.log('Catch Error: ' + err);
                 });
         });
     });
@@ -53,7 +53,7 @@ describe('User Route', () => {
                     expect(res.type).to.eql('application/json');
                 })
                 .catch((err) => {
-                    throw err;
+                    console.log('Catch Error: ' + err);
                 });
         });
 
@@ -61,10 +61,12 @@ describe('User Route', () => {
             chai.request(app)
                 .get('/users/589694486fb62f007da7306b') // superman id
                 .then((res) => {
+                    expect(res.type).to.eql('application/json');
                     expect(res.body).to.have.property('success').that.is.a('boolean');
+                    expect(res.body).to.have.property('success').that.is.eql(true);
                 })
                 .catch((err) => {
-                    throw err;
+                    console.log('Catch Error: ' + err);
                 });
         });
 
@@ -72,10 +74,11 @@ describe('User Route', () => {
             chai.request(app)
                 .get('/users/589694486fb62f007da7306b') // superman id
                 .then((res) => {
+                    expect(res.type).to.eql('application/json');
                     expect(res.body).to.have.property('payload').that.is.an('object');
                 })
                 .catch((err) => {
-                    throw err;
+                    console.log('Catch Error: ' + err);
                 });
         });
 

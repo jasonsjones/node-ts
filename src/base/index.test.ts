@@ -16,7 +16,7 @@ describe('Base Route', () => {
                 expect(res.type).to.eql('application/json');
             })
             .catch((err) => {
-                throw err;
+                console.log('Catch Error: ' + err);
             });
     });
 
@@ -27,7 +27,7 @@ describe('Base Route', () => {
                 expect(res.body).to.have.property('message').that.is.a('string');
             })
             .catch((err) => {
-                throw err;
+                console.log('Catch Error: ' + err);
             });
     });
 
