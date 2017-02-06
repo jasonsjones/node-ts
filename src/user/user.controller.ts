@@ -19,21 +19,17 @@ export class UserController {
             });
     }
 
-    public static seedUsers(req: Request, res: Response, next: NextFunction): void {
-        User.find({}).exec()
-            .then(collection => {
-                if (collection && collection.length === 0) {
-                    // create users here...
-                } else {
-                    res.json({
-                        success: true,
-                        payload: collection
-                    });
-                }
+    public static getSingleUser(req: Request, res: Response, next: NextFunction): void {
+        User.findById(req.params.id).exec()
+            .then(user => {
+                res.json({
+                    success: true,
+                    payload: user
+                });
+
                 next();
             })
-            .catch((err) => {
-                console.log('Oops...we had an error');
+            .catch(err => {
                 next(err);
             });
     }

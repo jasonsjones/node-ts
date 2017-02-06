@@ -12,7 +12,7 @@ import { UserController } from './user.controller';
 const expect = chai.expect;
 
 describe('User Controller', () => {
-    let req: Request;
+    let req: any;
     let res: any;
 
     beforeEach(() => {
@@ -54,63 +54,61 @@ describe('User Controller', () => {
         });
     });
 
-    describe.skip('seedUsers()', () => {
-
+    describe('getSingleUser()', () => {
         let UserMock;
+        let superman = {
+            name: {
+                first: 'Clark',
+                last: 'Kent'
+            },
+            email: 'clark@dailyplanet.com',
+            local: {
+                username: 'superman'
+            },
+            admin: true,
+            createdDate: new Date('2016-09-12')
+        };
+
         beforeEach(() => {
             UserMock = sinon.mock(User);
+            UserMock.expects('findById').withArgs('12345')
+                .chain('exec')
+                .resolves({success: true, payload: superman});
+        });
+
+        afterEach(() => {
+            UserMock.restore();
         });
 
         it('calls res.json()', (done) => {
-            let resObj = {success: true, message: 'seeding users in database'};
-            let stub = sinon.stub(UserController, 'createUsers');
-            stub.returns(Promise.resolve(resObj));
-            UserController.seedUsers(req, res, function() {
+            req = {
+                params: {
+                    id: '12345'
+                }
+            };
+            UserController.getSingleUser(req, res, function () {
+                UserMock.verify();
                 expect(res.json.calledOnce).to.be.true;
-                stub.restore();
                 done();
             });
         });
 
-        it('calls res.json() with message when db is empty', (done) => {
-            let resObj = {success: true, message: 'seeding users in database'};
+        it('calls res.json() with response obj', (done) => {
+            let resObj = {success: true, payload: superman};
 
-            UserMock.expects('find').withArgs({})
-                .chain('exec')
-                .resolves([]);
+            req = {
+                params: {
+                    id: '12345'
+                }
+            };
 
-            let stub = sinon.stub(UserController, 'createUsers');
-            stub.returns(Promise.resolve(resObj));
-
-            UserController.seedUsers(req, res, function() {
+            UserController.getSingleUser(req, res, function () {
                 UserMock.verify();
-                UserMock.restore();
                 expect(res.json.calledOnce).to.be.true;
-                expect(res.json.calledWith(resObj)).to.be.true;
-                stub.restore();
-                done();
-            });
-        });
-
-        it('calls res.json() with users when db is not empty', (done) => {
-            let testUser = {name: 'jason'};
-            let resObj = {success: true, payload: testUser};
-
-            UserMock.expects('find').withArgs({})
-                .chain('exec')
-                .resolves(testUser);
-
-            UserController.seedUsers(req, res, function() {
-                UserMock.verify();
-                UserMock.restore();
-                expect(res.json.calledOnce).to.be.true;
-                expect(res.json.calledWith(resObj)).to.be.true;
+                expect(res.json.calledWith(resObj));
                 done();
             });
         });
 
     });
-
-
-
 });
