@@ -4,14 +4,13 @@
   "description": "Simple node app written in typescript",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm run clean && npm run lint && npm run compile",
-    "start": "npm-run-all --parallel compile:watch test:watch nodemon",
+    "prestart": "npm-run-all --sequential clean lint compile",
+    "start": "nodemon build/server.js",
     "clean": "rm -rf build",
     "compile": "tsc",
     "compile:watch": "npm run compile -- --watch",
     "lint": "tslint src/**/*.ts",
-    "nodemon": "nodemon build/server.js",
-    "test": "NODE_ENV=test mocha --compilers ts:ts-node/register src/**/*.test.ts",
+    "test": "mocha --compilers ts:ts-node/register src/**/*.test.ts",
     "test:watch": "npm run test -- --watch"
   },
   "author": "Jason Jones",

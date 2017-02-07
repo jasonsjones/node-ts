@@ -1,7 +1,7 @@
 version: '2'
 
 services:
-    node:
+    node-server:
         container_name: server
         build:
             context: .
@@ -15,6 +15,37 @@ services:
             - "3000:3000"
         depends_on:
             - mongo
+
+    node-tester:
+        container_name: tester
+        build:
+            context: .
+        volumes:
+            - .:/home/nodets
+            - /home/nodets/node_modules
+        environment:
+            - NODE_ENV=test
+            - PORT=3003
+        tty: true
+        ports:
+            - "3003:3003"
+        depends_on:
+            - mongo
+        entrypoint: ["npm", "run", "test:watch"]
+
+    node-compiler:
+        container_name: compiler
+        build:
+            context: .
+        volumes:
+            - .:/home/nodets
+            - /home/nodets/node_modules
+        environment:
+            - PORT=3004
+        tty: true
+        ports:
+            - "3004:3004"
+        entrypoint: ["npm", "run", "compile:watch"]
 
     mongo:
         container_name: database
