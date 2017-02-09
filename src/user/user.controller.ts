@@ -26,7 +26,23 @@ export class UserController {
                     success: true,
                     payload: user
                 });
+                next();
+            })
+            .catch(err => {
+                next(err);
+            });
+    }
 
+    public static addUser(req: Request, res: Response, next: NextFunction): void {
+        let newUser = new User(req.body);
+
+        newUser.save()
+            .then(user => {
+                res.status(201);
+                res.json({
+                    success: true,
+                    payload: user
+                });
                 next();
             })
             .catch(err => {

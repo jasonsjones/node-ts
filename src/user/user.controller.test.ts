@@ -17,7 +17,8 @@ describe('User Controller', () => {
 
     beforeEach(() => {
         res = {
-            json: sinon.spy()
+            json: sinon.spy(),
+            status: sinon.spy()
         };
     });
 
@@ -110,5 +111,32 @@ describe('User Controller', () => {
             });
         });
 
+    });
+
+    describe.skip('addUser()', () => {
+        beforeEach(() => {
+            req.body = {
+                name: {
+                    firstName: 'Oliver',
+                    lastName: 'Queen'
+                },
+                email: 'oliver@queenconsolidated.com',
+                local: {
+                    username: 'arrow',
+                    password: 'p@ssw0rd'
+                }
+            };
+        });
+
+        afterEach(() => {
+            User.collection.drop();
+        });
+
+        it('calls res.json()', (done) => {
+            UserController.addUser(req, res, function () {
+                expect(res.json.calledOnce).to.be.true;
+                done();
+            });
+        });
     });
 });
