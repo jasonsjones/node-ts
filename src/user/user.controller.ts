@@ -1,8 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { User } from './user.model';
 
-import  mockUsers from './user.mock.data';
-
 export class UserController {
 
     public static getUsers(req: Request, res: Response, next: NextFunction): void {
