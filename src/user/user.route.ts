@@ -16,6 +16,7 @@ class UserRoute {
     public initRoutes(): void {
         this.router.get('/', UserController.getUsers);
         this.router.get('/:id', UserController.getSingleUser);
+        this.router.post('/', UserController.addUser);
     }
 }
 
