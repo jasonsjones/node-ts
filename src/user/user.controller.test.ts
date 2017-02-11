@@ -6,7 +6,7 @@ import 'sinon-mongoose';
 import 'sinon-as-promised';
 import { Request, Response } from 'express';
 
-import { User } from './user.model';
+import { User, TestUser } from './user.model';
 import { UserController } from './user.controller';
 
 const expect = chai.expect;
@@ -113,8 +113,9 @@ describe('User Controller', () => {
 
     });
 
-    describe.skip('addUser()', () => {
+    describe('addUser()', () => {
         beforeEach(() => {
+            UserController.setModel(TestUser);
             req.body = {
                 name: {
                     firstName: 'Oliver',
@@ -129,7 +130,8 @@ describe('User Controller', () => {
         });
 
         afterEach(() => {
-            User.collection.drop();
+            TestUser.collection.drop();
+            UserController.setModel(User);
         });
 
         it('calls res.json()', (done) => {
