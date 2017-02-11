@@ -46,9 +46,21 @@ describe('User Route', () => {
     });
 
     describe('GET /users/:id', () => {
+        let firstUserId;
+        before(() => {
+            chai.request(app)
+                .get('/users')
+                .then((res) => {
+                    firstUserId = res.body.payload[0]._id;
+                })
+                .catch((err) => {
+                    console.log('Catch Error: ' + err);
+                });
+        });
+
         it('is json', () => {
             chai.request(app)
-                .get('/users/589694486fb62f007da7306b') // superman id
+                .get('/users/' + firstUserId)
                 .then((res) => {
                     expect(res.type).to.eql('application/json');
                 })
@@ -59,7 +71,7 @@ describe('User Route', () => {
 
         it('returns json with success property that is a boolean', () => {
             chai.request(app)
-                .get('/users/589694486fb62f007da7306b') // superman id
+                .get('/users/' + firstUserId)
                 .then((res) => {
                     expect(res.type).to.eql('application/json');
                     expect(res.body).to.have.property('success').that.is.a('boolean');
@@ -72,7 +84,7 @@ describe('User Route', () => {
 
         it('returns json with payload property that is an object', () => {
             chai.request(app)
-                .get('/users/589694486fb62f007da7306b') // superman id
+                .get('/users/589e9e5ca8191700221b6a7c') // superman id
                 .then((res) => {
                     expect(res.type).to.eql('application/json');
                     expect(res.body).to.have.property('payload').that.is.an('object');
