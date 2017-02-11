@@ -1,9 +1,18 @@
 import { Request, Response, NextFunction } from 'express';
-import { User } from './user.model';
+import { Model } from 'mongoose';
+import { User as MainModel } from './user.model';
+import { IUserModel } from './user.interfaces';
 
 export class UserController {
 
+    private static User: Model<IUserModel> = MainModel;
+
+    public static setModel(model: Model<IUserModel>): void {
+        UserController.User = model;
+    }
+
     public static getUsers(req: Request, res: Response, next: NextFunction): void {
+        let User = UserController.User;
         User.find({}).exec()
             .then(users => {
                 res.json({
@@ -18,6 +27,7 @@ export class UserController {
     }
 
     public static getSingleUser(req: Request, res: Response, next: NextFunction): void {
+        let User = UserController.User;
         User.findById(req.params.id).exec()
             .then(user => {
                 res.json({
@@ -32,6 +42,7 @@ export class UserController {
     }
 
     public static addUser(req: Request, res: Response, next: NextFunction): void {
+        let User = UserController.User;
         let newUser = new User(req.body);
 
         newUser.save()
