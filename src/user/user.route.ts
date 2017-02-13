@@ -14,9 +14,12 @@ class UserRoute {
     }
 
     public initRoutes(): void {
-        this.router.get('/', UserController.getUsers);
-        this.router.get('/:id', UserController.getSingleUser);
-        this.router.post('/', UserController.addUser);
+        this.router.route('/')
+            .get(UserController.getUsers)
+            .post(UserController.addUser);
+
+        this.router.route('/:id')
+            .get(UserController.getSingleUser);
     }
 }
 
