@@ -58,4 +58,19 @@ export class UserController {
                 next(err);
             });
     }
+
+    public static removeUser(req: Request, res: Response, next: NextFunction): void {
+        let User = UserController.User;
+        User.findByIdAndRemove(req.params.id).exec()
+            .then(user => {
+                res.json({
+                    success: true,
+                    payload: user
+                });
+                next();
+            })
+            .catch(err => {
+                next(err);
+            });
+    }
 }

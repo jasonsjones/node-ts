@@ -113,8 +113,9 @@ describe('User Controller', () => {
 
     });
 
-    describe('addUser()', () => {
-        beforeEach(() => {
+    describe('add and remove user:', () => {
+        let userId;
+        before(() => {
             UserController.setModel(TestUser);
             req.body = {
                 name: {
@@ -129,14 +130,39 @@ describe('User Controller', () => {
             };
         });
 
-        afterEach(() => {
+        after(() => {
             TestUser.collection.drop();
             UserController.setModel(User);
         });
 
-        it('calls res.json()', (done) => {
+        it('addUser() calls res.json() with a response object containing the user added', (done) => {
             UserController.addUser(req, res, function () {
+                let args = res.json.args[0][0];
+                userId = args.payload._id;
                 expect(res.json.calledOnce).to.be.true;
+                expect(args).to.exist;
+                expect(args).to.have.property('success');
+                expect(args).to.have.property('payload');
+                expect(args.payload.email).to.equal(req.body.email);
+                expect(args.payload.local.username).to.equal(req.body.local.username);
+                done();
+            });
+        });
+
+        it('removeUser() calls res.json() with a response object containing the user removed', (done) => {
+            req = {
+                params: {
+                    id: userId
+                }
+            };
+
+            UserController.removeUser(req, res, function () {
+                let args = res.json.args[0][0];
+                expect(res.json.calledOnce).to.be.true;
+                expect(args).to.exist;
+                expect(args).to.have.property('success');
+                expect(args).to.have.property('payload');
+                expect(args.payload._id).to.eql(userId);
                 done();
             });
         });
