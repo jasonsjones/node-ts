@@ -30,10 +30,18 @@ export class UserController {
         let User = UserController.User;
         User.findById(req.params.id).exec()
             .then(user => {
-                res.json({
-                    success: true,
-                    payload: user
-                });
+                if (user) {
+                    res.json({
+                        success: true,
+                        payload: user
+                    });
+                } else {
+                    res.json({
+                        success: false,
+                        message: 'User not found',
+                        payload: null
+                    });
+                }
                 next();
             })
             .catch(err => {

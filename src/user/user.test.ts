@@ -101,6 +101,21 @@ describe('User Route', () => {
                     expect(err).to.be.null;
                 });
         });
+
+        it('returns json when user is not found', () => {
+            chai.request(app)
+                .get('/users/58a3d89b41c59d006d7cb4d7')
+                .then((res) => {
+                    expect(res.type).to.eql('application/json');
+                    expect(res.body).to.have.property('success').that.is.eql(false);
+                    expect(res.body).to.have.property('message').that.is.a('string');
+                    expect(res.body).to.have.property('payload').that.is.null;
+                })
+                .catch((err) => {
+                    console.log('Catch Error: ' + err);
+                    expect(err).to.be.null;
+                });
+        });
     });
 
 });

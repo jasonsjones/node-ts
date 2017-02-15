@@ -94,7 +94,7 @@ describe('User Controller', () => {
             });
         });
 
-        it('calls res.json() with response obj', (done) => {
+        it('calls res.json() with response obj when user is found', (done) => {
             let resObj = {success: true, payload: superman};
 
             req = {
@@ -110,6 +110,8 @@ describe('User Controller', () => {
                 done();
             });
         });
+
+        it('calls res.json() with response obj when user is not found');
 
     });
 
