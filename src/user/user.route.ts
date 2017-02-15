@@ -19,7 +19,8 @@ class UserRoute {
             .post(UserController.addUser);
 
         this.router.route('/:id')
-            .get(UserController.getSingleUser);
+            .get(UserController.getSingleUser)
+            .delete(UserController.removeUser);
     }
 }
 
