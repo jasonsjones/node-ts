@@ -4,10 +4,15 @@ import chaiHttp = require('chai-http');
 
 import app from '../config/app';
 
+import { User, TestUser } from './user.model';
+import { UserController } from './user.controller';
+
 chai.use(chaiHttp);
 const expect = chai.expect;
 
 describe('User Route', () => {
+
+    let userIdToDelete;
 
     describe('GET /users', () => {
 
@@ -40,6 +45,45 @@ describe('User Route', () => {
                 .get('/users')
                 .then((res) => {
                     expect(res.body).to.have.property('payload').that.is.an('array');
+                })
+                .catch((err) => {
+                    console.log('Catch Error: ' + err);
+                    expect(err).to.be.null;
+                });
+        });
+    });
+
+    describe('POST /users', () => {
+        let dig = {
+            email: 'dig@queenconsolidated.com',
+            admin: false,
+            local: {
+                username: 'spartan',
+                password: 'p@ssw0rd'
+            },
+            name: {
+                first: 'John',
+                last: 'Diggle'
+            }
+        };
+
+        before(() => {
+            UserController.setModel(TestUser);
+        });
+
+        after(() => {
+            UserController.setModel(User);
+        });
+
+        it('adds a user to the db', () => {
+            chai.request(app)
+                .post('/users')
+                .send(dig)
+                .then(res => {
+                    expect(res.type).to.eql('application/json');
+                    expect(res.body).to.have.property('success').that.is.a('boolean');
+                    expect(res.body).to.have.property('payload').that.is.an('object');
+                    userIdToDelete = res.body.payload._id;
                 })
                 .catch((err) => {
                     console.log('Catch Error: ' + err);
