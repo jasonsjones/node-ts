@@ -53,19 +53,7 @@ describe('User Route', () => {
         });
     });
 
-    describe('POST /users', () => {
-        let dig = {
-            email: 'dig@queenconsolidated.com',
-            admin: false,
-            local: {
-                username: 'spartan',
-                password: 'p@ssw0rd'
-            },
-            name: {
-                first: 'John',
-                last: 'Diggle'
-            }
-        };
+    describe.skip('POST /users', () => {
 
         before(() => {
             UserController.setModel(TestUser);
@@ -76,6 +64,18 @@ describe('User Route', () => {
         });
 
         it('adds a user to the db', () => {
+            let dig = {
+                email: 'dig@queenconsolidated.com',
+                admin: false,
+                local: {
+                    username: 'spartan',
+                    password: 'p@ssw0rd'
+                },
+                name: {
+                    first: 'John',
+                    last: 'Diggle'
+                }
+            };
             chai.request(app)
                 .post('/users')
                 .send(dig)
@@ -162,4 +162,27 @@ describe('User Route', () => {
         });
     });
 
+    describe.skip('DELETE /users/:id', () => {
+
+        before(() => {
+            UserController.setModel(TestUser);
+        });
+
+        after(() => {
+            UserController.setModel(User);
+        });
+        it('removes a user from  the db', () => {
+            chai.request(app)
+                .delete(`/users/${userIdToDelete}`)
+                .then(res => {
+                    expect(res.type).to.eql('application/json');
+                    expect(res.body).to.have.property('success').that.is.a('boolean');
+                    expect(res.body).to.have.property('payload').that.is.an('object');
+                })
+                .catch((err) => {
+                    console.log('Catch Error: ' + err);
+                    expect(err).to.be.null;
+                });
+        });
+    });
 });
