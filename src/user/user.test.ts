@@ -53,7 +53,7 @@ describe('User Route', () => {
         });
     });
 
-    describe.skip('POST /users', () => {
+    describe('POST /users', () => {
 
         before(() => {
             UserController.setModel(TestUser);
@@ -162,18 +162,19 @@ describe('User Route', () => {
         });
     });
 
-    describe.skip('DELETE /users/:id', () => {
+    describe('DELETE /users/:id', () => {
 
         before(() => {
             UserController.setModel(TestUser);
         });
 
         after(() => {
+            TestUser.collection.drop();
             UserController.setModel(User);
         });
         it('removes a user from  the db', () => {
             chai.request(app)
-                .delete(`/users/${userIdToDelete}`)
+                .del(`/users/${userIdToDelete}`)
                 .then(res => {
                     expect(res.type).to.eql('application/json');
                     expect(res.body).to.have.property('success').that.is.a('boolean');

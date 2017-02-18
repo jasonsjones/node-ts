@@ -110,9 +110,6 @@ describe('User Controller', () => {
                 done();
             });
         });
-
-        it('calls res.json() with response obj when user is not found');
-
     });
 
     describe('add and remove user:', () => {
