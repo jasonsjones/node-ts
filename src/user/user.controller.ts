@@ -97,7 +97,7 @@ export class UserController {
                                 success: true,
                                 payload: updatedUser
                             });
-                        })
+                        });
                 } else {
                     res.json({
                         success: false,
