@@ -81,4 +81,34 @@ export class UserController {
                 next(err);
             });
     }
+
+    public static updateUser(req: Request, res: Response, next: NextFunction): void {
+        let User = UserController.User;
+        User.findById(req.params.id).exec()
+            .then(user => {
+                if (user) {
+                    user.name = req.body.name;
+                    user.email = req.body.email;
+                    user.admin = req.body.admin;
+
+                    user.save()
+                        .then(updatedUser => {
+                            res.json({
+                                success: true,
+                                payload: updatedUser
+                            });
+                        })
+                } else {
+                    res.json({
+                        success: false,
+                        message: 'User not found',
+                        payload: null
+                    });
+                }
+                next();
+            })
+            .catch(err => {
+                next(err);
+            });
+    }
 }
