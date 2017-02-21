@@ -97,6 +97,47 @@ export class UserController {
                                 success: true,
                                 payload: updatedUser
                             });
+                        })
+                        .catch(err => {
+                            next(err)
+                        });
+                } else {
+                    res.json({
+                        success: false,
+                        message: 'User not found',
+                        payload: null
+                    });
+                }
+                next();
+            })
+            .catch(err => {
+                next(err);
+            });
+    }
+
+    public static patchUser(req: Request, res: Response, next: NextFunction): void {
+        let User = UserController.User;
+        User.findById(req.params.id).exec()
+            .then(user => {
+                if (user) {
+                    // patch user here...
+                    if (req.body.local && req.body.local.password) {
+                        delete req.body.local.password;
+                    }
+
+                    for (let p in req.body) {
+                        user[p] = req.body[p];
+                    }
+
+                    user.save()
+                        .then(updatedUser => {
+                            res.json({
+                                success: true,
+                                payload: updatedUser
+                            });
+                        })
+                        .catch(err => {
+                            next(err)
                         });
                 } else {
                     res.json({

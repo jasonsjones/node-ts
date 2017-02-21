@@ -20,6 +20,8 @@ class UserRoute {
 
         this.router.route('/:id')
             .get(UserController.getSingleUser)
+            .patch(UserController.patchUser)
+            .put(UserController.updateUser)
             .delete(UserController.removeUser);
     }
 }
